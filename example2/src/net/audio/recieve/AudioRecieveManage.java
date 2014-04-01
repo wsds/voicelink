@@ -17,10 +17,12 @@ public class AudioRecieveManage {
 	public void initialize() {
 
 		recieveSocket = new RecieveSocket();
-		
+
 		initializeMediaCodec();
-		
-		mAACLATMunPacketizer= new AACLATMunPacketizer();
+
+		mAACLATMunPacketizer = new AACLATMunPacketizer();
+
+		mAACLATMunPacketizer.inputDecoderBuffers = inputDecoderBuffers;
 		mAACLATMunPacketizer.recieveSocket = recieveSocket;
 		mAACLATMunPacketizer.decoder = decoder;
 
@@ -45,7 +47,7 @@ public class AudioRecieveManage {
 	@SuppressLint({ "InlinedApi", "NewApi" })
 	public void initializeMediaCodec() {
 
-		bufferSize = AudioRecord.getMinBufferSize(mQuality.samplingRate, AudioFormat.CHANNEL_IN_MONO, AudioFormat.ENCODING_PCM_16BIT) * 2;
+		bufferSize = AudioRecord.getMinBufferSize(mQuality.samplingRate, AudioFormat.CHANNEL_OUT_DEFAULT, AudioFormat.ENCODING_PCM_16BIT) * 2;
 
 		decoder = MediaCodec.createDecoderByType("audio/mp4a-latm");
 		MediaFormat format = new MediaFormat();

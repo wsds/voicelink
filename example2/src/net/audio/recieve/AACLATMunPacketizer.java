@@ -93,14 +93,17 @@ public class AACLATMunPacketizer implements Runnable {
 				if (inputBufferIndex >= 0) {
 					ByteBuffer inputBuffer = inputDecoderBuffers[inputBufferIndex];
 					inputBuffer.clear();
-//					byte[] data = packingPacket.getData();
-//					inputBuffer.put(data);
+					byte[] data = packingPacket.getData();
 
-					decoder.queueInputBuffer(inputBufferIndex, 0, 1024, 0, 0);
+					byte[] dataNormalized = new byte[data.length - 16];
+					System.arraycopy(data, 16, dataNormalized, 0, data.length - 16);
+					inputBuffer.put(dataNormalized);
+
+					decoder.queueInputBuffer(inputBufferIndex, 0, data.length, 0, 0);
 				}
 				unPackIndex++;
 				Log.e(TAG, "unPack A packet  unPackIndex=" + unPackIndex);
-			}else{
+			} else {
 				try {
 					Log.e(TAG, "sleep");
 					Thread.sleep(50);
